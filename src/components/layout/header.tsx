@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import { DarkMode, LightMode } from "@mui/icons-material";
-import { useTheme } from "next-themes";
+// import { DarkMode, LightMode } from "@mui/icons-material";
+// import { useTheme } from "next-themes";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export const Header: React.FC = () => {
-  const { theme, setTheme } = useTheme();
+  // const { theme, setTheme } = useTheme();
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -77,7 +77,7 @@ export const Header: React.FC = () => {
                         onClick={() => router.push("/login")}
                         type="button"
                         className="mb-5 md:mb-0 py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-full bg-[#a2b8d3] hover:bg-[#75c09a] hover:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 text-gray-800"
-                        >
+                      >
                         Log-in
                       </button>
                     </>
@@ -87,12 +87,12 @@ export const Header: React.FC = () => {
                         onClick={() => signOut({ callbackUrl: "/" })}
                         type="button"
                         className="mb-5 md:mb-0 py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-full bg-[#a2b8d3] hover:bg-[#75c09a] hover:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 text-gray-800"
-                        >
+                      >
                         Log-out
                       </button>
                     </>
                   )}
-                  <button
+                  {/* <button
                     onClick={() =>
                       theme == "dark" ? setTheme("light") : setTheme("dark")
                     }
@@ -104,7 +104,7 @@ export const Header: React.FC = () => {
                     ) : (
                       <DarkMode color="info" fontSize="medium" />
                     )}
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
