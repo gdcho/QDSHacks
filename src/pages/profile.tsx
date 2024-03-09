@@ -21,14 +21,7 @@ export default function Profile() {
   return (
     <div>
       <br />
-      {session && (
-        <p className="px-4 md:px-0 text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
-          Profile name: {session.user?.name}
-          <br />
-          Profile email: {session.user?.email}
-        </p>
-      )}
-      <ProfileForm />
+      {session && <ProfileForm />}
     </div>
   );
 }

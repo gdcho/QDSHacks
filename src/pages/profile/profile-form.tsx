@@ -11,6 +11,7 @@ import {
   Book,
   Terminal,
   Article,
+  Email,
 } from "@mui/icons-material";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
@@ -48,7 +49,6 @@ export default function ProfileForm() {
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
   const [availableCourses, setAvailableCourses] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState("");
-  
 
   // Standard width for all form controls
   const formControlWidth = { width: 300 };
@@ -113,6 +113,18 @@ export default function ProfileForm() {
             startAdornment={
               <InputAdornment position="start">
                 <AccountCircle />
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <FormControl variant="standard">
+          <InputLabel htmlFor="profile-email">Email</InputLabel>
+          <Input
+            id="profile-email"
+            defaultValue={session ? session.user?.email : ""}
+            startAdornment={
+              <InputAdornment position="start">
+                <Email />
               </InputAdornment>
             }
           />
