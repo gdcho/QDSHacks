@@ -17,10 +17,16 @@ export default function Home() {
         setUserData(jsonData);
 
         console.log('Data received:', jsonData);
+        
 
         if (session && !jsonData.some((user: { name: string | null | undefined; }) => user.name === session.user?.name)) {
           try {
-            await axios.post('/api/addUser', { name: session.user?.name });
+            console.log('Session:', session);
+            await axios.post('/api/addUser', {
+              user_id: session.user?.id,
+              name: session.user?.name,
+              session_email: session.user?.email
+            });
             console.log('User data inserted successfully');
           } catch (error) {
             console.error('Error inserting user data:', error);
@@ -33,7 +39,7 @@ export default function Home() {
       }
     };
     fetchData();
-  }, [session]);
+  }, [session, router]);
 
   return (
     <div>
