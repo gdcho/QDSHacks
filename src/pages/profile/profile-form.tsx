@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
+import Input from "@mui/material/Input";
+import InputAdornment from "@mui/material/InputAdornment";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import Chip from "@mui/material/Chip";
 import {
   AccountCircle,
   School,
@@ -13,27 +15,16 @@ import {
   Article,
   Email,
 } from "@mui/icons-material";
-import Select from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
-import MenuItem from "@mui/material/MenuItem";
 import {
   coursesByTerm,
   term,
   optionsLabels,
   TermData,
 } from "@/components/data/profile-data";
+import Modal from "@mui/material/Modal";
 import { useSession } from "next-auth/react";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+import { Button, Typography } from "@mui/material";
+import CourseRatingModal from "./course-rating-modal";
 
 function isTermData(termCourses: string[] | TermData): termCourses is TermData {
   return (
@@ -49,6 +40,18 @@ export default function ProfileForm() {
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
   const [availableCourses, setAvailableCourses] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedCourseForRating, setSelectedCourseForRating] = useState("");
+  const [courseRatings, setCourseRatings] = React.useState({});
+
+  const handleOpenModal = (course: React.SetStateAction<string>) => () => {
+    setSelectedCourseForRating(course);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   // Standard width for all form controls
   const formControlWidth = { width: 300 };
@@ -84,24 +87,55 @@ export default function ProfileForm() {
     setSelectedOption(newOption);
   };
 
-  const handleCourseChange = (event: { target: { value: any } }) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedCourses(typeof value === "string" ? value.split(",") : value);
-  };
-
   useEffect(() => {
-    // Whenever availableCourses changes, update selectedCourses to include all available courses
     setSelectedCourses(availableCourses);
   }, [availableCourses]);
 
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const toggleEditMode = () => {
+    setIsEditMode(!isEditMode);
+  };
+
+  const saveCourseRating = (courseName: any, rating: any) => {
+    setCourseRatings((prevRatings) => ({
+      ...prevRatings,
+      [courseName]: rating,
+    }));
+  };
+
+  // Handler to save form data
+  const saveForm = () => {
+    const userProfileUpdate = {
+      name: session?.user?.name,
+      email:
+        (document.getElementById("profile-email") as HTMLInputElement)?.value ||
+        "",
+      program: "Computer Systems Technology",
+      term: selectedTerm,
+      option: selectedOption,
+      courses: selectedCourses.map((course) => ({
+        courseName: course,
+        rating: courseRatings[course as keyof typeof courseRatings] || null,
+      })),
+    };
+    // updateProfile(userProfileUpdate).then(() => {
+    //   console.log('Profile updated successfully');
+    // }).catch((error) => {
+    //   console.error('Error updating profile', error);
+    // });
+
+    setIsEditMode(false);
+    console.log(userProfileUpdate);
+  };
+
   return (
-    <div className="flex flex-col items-center justify-around text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-1">
+    <div className="flex flex-col items-center justify-around text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mt-3">
       <Box
         className="flex flex-col"
         sx={{
           "& > :not(style)": { m: 1, ...formControlWidth, textAlign: "left" },
+          gap: 1,
         }}
       >
         <FormControl variant="standard">
@@ -122,6 +156,7 @@ export default function ProfileForm() {
           <Input
             id="profile-email"
             defaultValue={session ? session.user?.email : ""}
+            disabled={!isEditMode}
             startAdornment={
               <InputAdornment position="start">
                 <Email />
@@ -149,6 +184,7 @@ export default function ProfileForm() {
           id="profile-term"
           select
           label="Term"
+          disabled={!isEditMode}
           value={selectedTerm}
           onChange={handleTermChange}
           variant="standard"
@@ -173,6 +209,7 @@ export default function ProfileForm() {
               id="profile-option"
               select
               label="Option"
+              disabled={!isEditMode}
               value={selectedOption}
               onChange={handleOptionChange}
               variant="standard"
@@ -195,39 +232,60 @@ export default function ProfileForm() {
             </TextField>
           )}
         {/* Courses Selection */}
-        <FormControl variant="standard" sx={{ width: "100%", mt: 2 }} disabled>
-          <InputLabel>Courses</InputLabel>
-          <Select
-            multiple
-            value={selectedCourses}
-            onChange={handleCourseChange}
-            input={
-              <Input
-                id="select-multiple-chip"
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Book />
-                  </InputAdornment>
-                }
-              />
-            }
-            renderValue={(selected: any[]) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value: any) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-            disabled
-          >
+        <div>
+          <Typography variant="caption" color="gray">
+            Course Rating
+          </Typography>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
             {availableCourses.map((course) => (
-              <MenuItem key={course} value={course}>
-                {course}
-              </MenuItem>
+              <Chip
+                key={course}
+                icon={<Book />}
+                label={course}
+                onClick={handleOpenModal(course)}
+                disabled={!isEditMode}
+                color={selectedCourses.includes(course) ? "primary" : "default"}
+              />
             ))}
-          </Select>
-        </FormControl>
+          </Box>
+          <Modal
+            open={modalOpen}
+            onClose={handleCloseModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <CourseRatingModal
+              isOpen={modalOpen}
+              onClose={handleCloseModal}
+              courseName={selectedCourseForRating}
+              currentRating={
+                courseRatings[
+                  selectedCourseForRating as keyof typeof courseRatings
+                ] || ""
+              }
+              saveRating={saveCourseRating}
+            />
+          </Modal>
+        </div>
+        <Box sx={{ display: "flex", pt: 2, gap: 2 }}>
+          <Button
+            onClick={toggleEditMode}
+            variant="outlined"
+            sx={{ borderRadius: 10 }}
+            fullWidth
+          >
+            {isEditMode ? "Cancel" : "Edit"}
+          </Button>
+          <Button
+            onClick={saveForm}
+            variant="outlined"
+            disabled={!isEditMode}
+            sx={{ borderRadius: 10 }}
+            fullWidth
+          >
+            Save
+          </Button>
+        </Box>
       </Box>
     </div>
   );
