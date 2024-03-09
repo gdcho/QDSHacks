@@ -1,15 +1,39 @@
+import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useEffect } from 'react';
+import { useRouter } from "next/router";
+import { useEffect, useState } from 'react';
 
 export default function Home() {
   const { data: session } = useSession();
+  const [userData, setUserData] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
-    fetch('/api/mongo')
-        .then(response => response.json())
-        .then(data => console.log("hello", data))
-        .catch(error => console.error('Error:', error));
-  }, []);
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/mongo');
+        const jsonData = await response.json();
+
+        setUserData(jsonData);
+
+        console.log('Data received:', jsonData);
+
+        if (session && !jsonData.some((user: { name: string | null | undefined; }) => user.name === session.user?.name)) {
+          try {
+            await axios.post('/api/addUser', { name: session.user?.name });
+            console.log('User data inserted successfully');
+          } catch (error) {
+            console.error('Error inserting user data:', error);
+          }
+
+          router.push('/profile');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    fetchData();
+  }, [session]);
 
   return (
     <div>

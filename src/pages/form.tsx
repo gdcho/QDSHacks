@@ -8,7 +8,7 @@ export default function NewUserPage() {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        
+
         try {
             await axios.post('/api/addUser', { name });
 

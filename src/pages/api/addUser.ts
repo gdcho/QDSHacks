@@ -14,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const db = await connectToDatabase();
         const collection = db.collection('users');
 
-        // 입력된 이름을 데이터베이스에 저장
         await collection.insertOne({ name });
 
         return res.status(200).json({ message: 'User data inserted successfully' });
