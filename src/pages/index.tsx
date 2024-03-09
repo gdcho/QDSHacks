@@ -1,7 +1,15 @@
 import { useSession } from "next-auth/react";
+import { useEffect } from 'react';
 
 export default function Home() {
   const { data: session } = useSession();
+
+  useEffect(() => {
+    fetch('/api/mongo')
+        .then(response => response.json())
+        .then(data => console.log("hello", data))
+        .catch(error => console.error('Error:', error));
+  }, []);
 
   return (
     <div>
