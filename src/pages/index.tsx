@@ -19,7 +19,7 @@ export default function Home() {
         console.log('Data received:', jsonData);
         
 
-        if (session && !jsonData.some((user: { name: string | null | undefined; }) => user.name === session.user?.name)) {
+        if (session && !jsonData.some((user: { user_id: string; }) => user.user_id === session.user?.id)) {
           try {
             console.log('Session:', session);
             await axios.post('/api/addUser', {
