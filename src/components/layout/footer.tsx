@@ -2,8 +2,7 @@ import { LinkElement } from "../shared/footer/link-element";
 import {
   Home,
   AccountCircle,
-  AddToPhotos,
-  AutoAwesome,
+  ChatBubble,
   GitHub as GitHubLogo,
   LinkedIn as LinkedinLogo,
 } from "@mui/icons-material";
@@ -13,17 +12,33 @@ export const Footer = () => {
   const router = useRouter();
 
   return (
-    <footer className="inset-x-0 bottom-0 w-full bg-no-repeat bg-top bg-cover sm:relative fixed">
-      <div className="relative w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="pt-5 px-4 mt-5 border-t border-gray-200 dark:border-gray-700">
+    <footer className="bg-gray-800 inset-x-0 bottom-0 w-full bg-no-repeat bg-top bg-cover sm:relative fixed">
+      <div className="relative w-full max-w-[85rem] py-5 px-4 sm:px-6 lg:px-8 mx-auto">
+        <div className="px-6">
           {/* Header-like elements for mobile view */}
-          <div className="flex flex-row sm:hidden justify-between gap-y-3">
-            <Home onClick={() => router.push("/")} />
-            <AddToPhotos onClick={() => router.push("/page")} />
-            <AutoAwesome onClick={() => router.push("/page")} />
-            <AccountCircle onClick={() => router.push("/profile")} />
+          <div className="flex flex-row sm:hidden justify-between gap-y-2 text-white">
+            <div className="flex flex-col items-center">
+              <Home
+                className="cursor-pointer"
+                onClick={() => router.push("/")}
+              />
+              <small className="pt-1">Home</small>
+            </div>
+            <div className="flex flex-col items-center">
+              <ChatBubble
+                className="cursor-pointer"
+                onClick={() => router.push("/connect")}
+              />
+              <small className="pt-1">Connect</small>
+            </div>
+            <div className="flex flex-col items-center">
+              <AccountCircle
+                className="cursor-pointer"
+                onClick={() => router.push("/profile")}
+              />
+              <small className="pt-1">Profile</small>
+            </div>
           </div>
-
           <div className="hidden sm:flex sm:justify-between sm:items-center">
             <div className="flex items-center gap-x-3">
               <div className="space-x-4 text-sm ms-4">

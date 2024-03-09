@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full py-3 lg:py-0 bg-blue-950 shadow-sm">
+    <header className="sticky top-0 z-50 w-full py-3 lg:py-0 bg-gray-800 shadow-sm">
       <nav
         className="w-full mx-auto px-4 lg:max-w-[85rem] lg:px-6 lg:px-8"
         aria-label="Global"
@@ -58,7 +58,7 @@ export const Header: React.FC = () => {
 
                 <Link
                   className="font-medium text-gray-300 hover:text-gray-400 py-3 md:py-6 hidden md:flex"
-                  href="/page"
+                  href="/connect"
                 >
                   Page
                 </Link>

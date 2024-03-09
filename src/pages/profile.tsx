@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import ProfileForm from "./profile/profile-form";
 
 export default function Profile() {
   const { data: session, status } = useSession();
@@ -9,9 +10,9 @@ export default function Profile() {
   // Redirect if not authenticated
   useEffect(() => {
     if (status !== "loading" && !session) {
-      router.push("/login")} 
+      router.push("/login");
     }
-  , [session, status, router]);
+  }, [session, status, router]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -27,6 +28,7 @@ export default function Profile() {
           Profile email: {session.user?.email}
         </p>
       )}
+      <ProfileForm />
     </div>
   );
 }
