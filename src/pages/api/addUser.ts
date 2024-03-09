@@ -9,12 +9,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        const { name } = req.body;
+        const { user_id, name, session_email } = req.body;
 
         const db = await connectToDatabase();
         const collection = db.collection('users');
 
-        await collection.insertOne({ name });
+        await collection.insertOne({ user_id, name, session_email});
 
         return res.status(200).json({ message: 'User data inserted successfully' });
     } catch (error) {
