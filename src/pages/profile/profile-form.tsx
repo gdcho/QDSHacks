@@ -104,11 +104,34 @@ export default function ProfileForm() {
     }));
   };
 
+  const updateProfile = async (userProfileUpdate: any) => {
+    try {
+      const response = await fetch('/api/updateUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userProfileUpdate),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error during API call:', error);
+      throw error;
+    }
+  };
+
+
   // Handler to save form data
   const saveForm = () => {
     const userProfileUpdate = {
+      user_id: session?.user?.id,
       name: session?.user?.name,
-      email:
+      session_email:
         (document.getElementById("profile-email") as HTMLInputElement)?.value ||
         "",
       program: "Computer Systems Technology",
@@ -119,11 +142,13 @@ export default function ProfileForm() {
         rating: courseRatings[course as keyof typeof courseRatings] || null,
       })),
     };
-    // updateProfile(userProfileUpdate).then(() => {
-    //   console.log('Profile updated successfully');
-    // }).catch((error) => {
-    //   console.error('Error updating profile', error);
-    // });
+
+    updateProfile(userProfileUpdate).then(() => {
+      console.log('Profile updated successfully');
+    }).catch((error: any) => {
+      console.error('Error updating profile', error);
+    });
+    
 
     setIsEditMode(false);
     console.log(userProfileUpdate);
