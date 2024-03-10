@@ -67,7 +67,7 @@ export default function Home() {
               if (session) {
                 router.push("/match");
               } else {
-                router.push("/profile");
+                window.scrollTo(0, 500);
               }
             }}
           >
@@ -86,9 +86,41 @@ export default function Home() {
           </p>
         </div>
         <br></br>
-        {/* <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md my-8">
+        <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md my-8">
             <StressStatsDisplay />
-          </div> */}
+          </div>
+        <div className="flex flex-col space-y-8">
+          {/* Step 1 Box */}
+          <div className="bg-gray-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
+            <p className="text-gray-600 dark:text-gray-800">
+              Heres a guide for how to use <strong>StressBuddies</strong>! Please make sure to read all of it!
+            </p>
+          </div>
+          <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
+            <p><strong>Step 1:</strong> To get started, you would need to the profile page,
+              and select your term.</p>
+
+          </div>
+
+          {/* Black line separator */}
+          <div className="bg-black h-0.5 mx-4 md:mx-0"></div>
+
+          {/* Step 2 Box */}
+          <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
+            <p><strong>Step 2:</strong> After selecting your term you can begin rating your knowledge level for each of your courses.</p>
+            <img src="./image/Step2.png" alt="Step 2" className="mx-auto" />
+          </div>
+
+          {/* Black line separator */}
+          <div className="bg-black h-0.5 mx-4 md:mx-0"></div>
+
+          {/* Step 3 Box */}
+          <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
+            <p><strong>Step 3:</strong> After choosing your knowledge level for all classes, you can click on Home and click,
+              Find Your Buddy button to find a work parter for you.</p>
+            <img src="./image/Step3.png" alt="Step 3" className="mx-auto" />
+          </div>
+        </div>
       </div>
     </div>
   );
