@@ -25,6 +25,7 @@ import Modal from "@mui/material/Modal";
 import { useSession } from "next-auth/react";
 import { Button, Typography } from "@mui/material";
 import CourseRatingModal from "./course-rating-modal";
+import { Alert } from "@mui/material";
 
 function isTermData(termCourses: string[] | TermData): termCourses is TermData {
   return (
@@ -36,13 +37,15 @@ function isTermData(termCourses: string[] | TermData): termCourses is TermData {
 
 export default function ProfileForm() {
   const { data: session } = useSession();
+  const [isEditMode, setIsEditMode] = useState<boolean>(true);
   const [selectedTerm, setSelectedTerm] = useState("1");
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
   const [availableCourses, setAvailableCourses] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedCourseForRating, setSelectedCourseForRating] = useState("");
   const [courseRatings, setCourseRatings] = React.useState({});
+  const [showError, setShowError] = useState<boolean>(false);
 
   const handleOpenModal = (course: React.SetStateAction<string>) => () => {
     setSelectedCourseForRating(course);
@@ -91,8 +94,6 @@ export default function ProfileForm() {
     setSelectedCourses(availableCourses);
   }, [availableCourses]);
 
-  const [isEditMode, setIsEditMode] = useState(false);
-
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
   };
@@ -128,6 +129,21 @@ export default function ProfileForm() {
 
   // Handler to save form data
   const saveForm = () => {
+    // Check if all selectedCourses have a rating
+    const allCoursesRated = selectedCourses.every(
+      (course) =>
+        courseRatings[course as keyof typeof courseRatings] !== undefined &&
+        courseRatings[course as keyof typeof courseRatings] !== null
+    );
+
+    if (!allCoursesRated) {
+      setShowError(true);
+      window.scrollTo(0, 0);
+      return;
+    } else {
+      setShowError(false);
+    }
+
     const userProfileUpdate = {
       user_id: session?.user?.id,
       name: session?.user?.name,
@@ -143,19 +159,26 @@ export default function ProfileForm() {
       })),
     };
 
+
+    setIsEditMode(false);
+    console.log(userProfileUpdate);
+
+    // Assuming you have a function to actually persist the update, it would go here
     updateProfile(userProfileUpdate).then(() => {
       console.log('Profile updated successfully');
     }).catch((error: any) => {
       console.error('Error updating profile', error);
     });
     
-
-    setIsEditMode(false);
-    console.log(userProfileUpdate);
   };
 
   return (
     <div className="flex flex-col items-center justify-around text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mt-3">
+      {showError && (
+        <Alert severity="error" sx={{ width: "90%", mb: 2 }}>
+          Rate all selected courses before saving
+        </Alert>
+      )}
       <Box
         className="flex flex-col"
         sx={{
@@ -292,23 +315,20 @@ export default function ProfileForm() {
             />
           </Modal>
         </div>
-        <Box sx={{ display: "flex", pt: 2, gap: 2 }}>
+        <Box sx={{ display: "flex" }}>
           <Button
-            onClick={toggleEditMode}
+            onClick={() => {
+              if (isEditMode) {
+                saveForm();
+              } else {
+                setIsEditMode(true);
+              }
+            }}
             variant="outlined"
             sx={{ borderRadius: 10 }}
             fullWidth
           >
-            {isEditMode ? "Cancel" : "Edit"}
-          </Button>
-          <Button
-            onClick={saveForm}
-            variant="outlined"
-            disabled={!isEditMode}
-            sx={{ borderRadius: 10 }}
-            fullWidth
-          >
-            Save
+            {isEditMode ? "Save" : "Edit"}
           </Button>
         </Box>
       </Box>
