@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const db = await connectToDatabase();
         const collection = db.collection('users');
 
-        await collection.insertOne({ user_id, name, session_email});
+        await collection.insertOne({ user_id, name, session_email });
 
         return res.status(200).json({ message: 'User data inserted successfully' });
     } catch (error) {

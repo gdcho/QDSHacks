@@ -2,7 +2,9 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Avatar, Box, Typography, Paper } from "@mui/material";
 import { North } from "@mui/icons-material";
-
+import { match } from "assert";
+import axios from "axios";
+import createChatRoom from "@/utils/createChatRoom";
 type UserProps = {
   name: string;
   strength: string;
@@ -113,6 +115,11 @@ export default function Match() {
   const { data: session } = useSession();
   const [thisUser, setThisUser] = useState<string | null>(null);
   const [studentPair, setStudentPair] = useState<StudentPairProps | null>(null);
+  const [matchedList, setMatchedList] = useState<any[]>([]);
+  const [thisUserId, setThisUserId] = useState<string>("");
+  const [thisUserName, setThisUserName] = useState<string>("");
+  const [matchedUserName, setMatchedUserName] = useState<string>("");
+  const [matchedUserId, setMatchedUserId] = useState<string>("");
 
   useEffect(() => {
     if (session && session.user && session.user.id) {
@@ -136,12 +143,23 @@ export default function Match() {
           console.error("This user data not found");
         }
 
+        const previouslyMatchedUserIds = Array.isArray(
+          thisUserData.matched_user_id
+        )
+          ? thisUserData.matched_user_id
+          : [];
+
         var otherUsers = jsonData.filter(
           (user: { user_id: any; term: any; option: any }) =>
             user.user_id !== thisUser &&
             user.term === thisUserData.term &&
-            user.option === thisUserData.option
+            user.option === thisUserData.option &&
+            !previouslyMatchedUserIds.includes(user.user_id)
         );
+        if (otherUsers.length === 0) {
+          alert("No users found!");
+          return;
+        }
         const thisUserResults = thisUserData.courses.map(
           (course: { rating: any }) => course.rating
         );
@@ -153,9 +171,13 @@ export default function Match() {
         );
 
         const matchInfo = run(
+          
           [thisUserResults],
+         
           otherUsersResults,
+         
           thisUser as never
+        
         );
 
         var matchedUser = jsonData.find(
@@ -187,8 +209,39 @@ export default function Match() {
           user2: user2Props,
         };
         setStudentPair({
-          user1: user1Props,
-          user2: user2Props,
+          user1: { name: user2Name, strength: strengthx, weakness: weaknessx },
+          user2: { name: user1Name, strength: weaknessx, weakness: strengthx },
+        });
+        if (!thisUserData) {
+          console.error("This user data not found");
+          return;
+        }
+
+        // Initialize matched_user_id as an array if it's not already
+        const existingMatches = Array.isArray(thisUserData.matched_user_id)
+          ? thisUserData.matched_user_id
+          : [];
+
+        const matchedUserInfo = {
+          user_id: thisUserData.user_id,
+          matched_user_id: [...existingMatches, matchInfo.userId],
+        };
+
+        try {
+          await axios.post("/api/updateMatch", matchedUserInfo);
+          console.log("User data updated successfully");
+        } catch (error) {
+          console.error("Error updating user data:", error);
+        }
+
+        // Update the local matchedList state to include the new match
+        setMatchedList((currentMatchedList) => {
+          // Create a new set to avoid duplicate user IDs
+          const newSet = new Set(currentMatchedList.map((item) => item.id));
+          // Add the new user ID
+          newSet.add(matchInfo.userId);
+          // Convert the set back to an array
+          return Array.from(newSet).map((id) => ({ id }));
         });
       } catch (error) {
         console.error("Error:", error);
@@ -197,6 +250,29 @@ export default function Match() {
 
     fetchData();
   }, [thisUser]);
+
+  console.log(thisUserId);
+  console.log(matchedUserId);
+
+  const user_id = session?.user?.id || "";
+  const userName = session?.user?.name || "";
+  const userToken = session?.user?.token || "";
+
+  function chatRoom() {
+    createChatRoom(
+      user_id,
+      userName,
+      userToken,
+      thisUserId,
+      matchedUserId,
+      thisUserName,
+      matchedUserName
+    );
+    router.push("/connect");
+  }
+
+  // createChatRoom("117082830115624728877", "106315073484519680643");
+
   return (
     <Box className="flex flex-col items-center justify-center p-10">
       {/* User 2 */}
@@ -224,6 +300,23 @@ export default function Match() {
       <Typography variant="h6">{studentPair?.user1.name}</Typography>
       <Avatar
         src="/image/avatar.png"
+      <div className="flex justify-between items-center w-full my-8">
+        <div className="text-9xl transform rotate-180 my-4">&#8593;</div>{" "}
+        {/* Arrow pointing down */}
+        <div className="text-9xl my-4">&#8593;</div>
+      </div>
+
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-full text-2xl cursor-pointer"
+        onClick={() => chatRoom()}
+      >
+        Chat
+      </button>
+
+      <Image
+        src="/image/avatar.png"
+        width={100}
+        height={100}
         alt="User Avatar"
         style={{ width: 100, height: 100 }}
         className="mb-4 mt-2"
