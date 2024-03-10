@@ -35,6 +35,7 @@ export default function CourseRatingModal({
     const newRating = event.target.value;
     setRating(newRating);
     saveRating(courseName, newRating);
+    onClose();
   };
 
   return (
