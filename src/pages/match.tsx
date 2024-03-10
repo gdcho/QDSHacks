@@ -2,6 +2,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { match } from "assert";
+import axios from "axios";
 
 type UserProps = {
   name: string;
@@ -115,7 +117,7 @@ export default function Match() {
   const { data: session } = useSession();
   const [thisUser, setThisUser] = useState<string | null>(null);
   const [studentPair, setStudentPair] = useState<StudentPairProps | null>(null);
-  const [matchedUserInfo, setMatchedUserInfo] = useState({});
+  const [matchedList, setMatchedList] = useState<any[]>([]);
 
   useEffect(() => {
     if (session && session.user && session.user.id) {
@@ -171,9 +173,45 @@ export default function Match() {
         var user1Name = matchedUser.name;
         var user2Name = urself.name;
 
-        const matched_user_info = { user_id: matchInfo.requestId, matched_user_id: matchInfo.userId };
-        setMatchedUserInfo(matched_user_info);
-        // updateMatches(matched_user_info);
+        const user1Props: UserProps = {
+          name: user2Name,
+          strength: strengthx,
+          weakness: weaknessx,
+        };
+
+        const user2Props: UserProps = {
+          name: user1Name,
+          strength: weaknessx,
+          weakness: strengthx,
+        };
+
+        const studentPair: StudentPairProps = {
+          user1: user1Props,
+          user2: user2Props,
+        };
+        setStudentPair({
+          user1: user1Props,
+          user2: user2Props,
+        });
+
+        if (thisUserData.matched_user_id) {
+          const newItem = { id: thisUserData.matched_user_id };
+          setMatchedList([...matchedList, newItem]);
+          console.log(matchedList);
+        }
+
+        const newItem = { id: matchInfo.userId };
+        setMatchedList([...matchedList, newItem]);
+        console.log(matchedList);
+
+        const matched_user_info = { user_id: matchInfo.requestId, matched_user_id: matchedList };
+
+        try {
+          await axios.post("/api/updateMatch", matched_user_info);
+          console.log("User data updated successfully");
+        } catch (error) {
+          console.error("Error updating user data:", error);
+        }
 
       } catch (error) {
         console.error("Error:", error);
@@ -181,31 +219,6 @@ export default function Match() {
     };
     fetchData();
   }, [thisUser]);
-
-
-  useEffect(() => {
-    const updateMatches = async () => {
-      // const matched_user_info = { matchedUserInfo.user_id, matchedUserInfo.matched_user_id };
-      try {
-        console.log("updating matches")
-        const response = await fetch("/api/updateMatch", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(matchedUserInfo),
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return await response.json();
-      } catch (error) {
-        console.error("Error during API call:", error);
-        throw error;
-      }
-    };
-    updateMatches();
-  }, [matchedUserInfo]);
 
 
   return (
