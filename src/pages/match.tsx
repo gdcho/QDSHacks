@@ -140,11 +140,13 @@ export default function Match() {
           console.error("This user data not found");
           return;
         }
-  
+        const matd = Array.isArray(thisUserData.matched_user_id) ? thisUserData.matched_user_id : [];
+
         const otherUsers = jsonData.filter(user =>
           user.user_id !== thisUser &&
           user.term === thisUserData.term &&
-          user.option === thisUserData.option
+          user.option === thisUserData.option &&
+          !matd.includes(user.user_id)
         );
         
         if (otherUsers.length === 0) {
@@ -159,7 +161,7 @@ export default function Match() {
         }));
   
         const matchInfo = run([thisUserResults], otherUsersResults, thisUser as never);
-  
+        
         const matchedUser = jsonData.find(user => user.user_id === matchInfo.userId.toString());
         const urself = jsonData.find(user => user.user_id === thisUser);
         
@@ -213,7 +215,7 @@ export default function Match() {
     };
   
     fetchData();
-  }, [thisUser, matchedList]);
+  }, [thisUser]);
 
   console.log(thisUserId)
   console.log(matchedUserId)
