@@ -15,6 +15,9 @@ Stress Buddies is a useful app for students dealing with challenging assignments
 ![Google OAuth](https://img.shields.io/badge/Google_OAuth-%234285f4.svg?style=for-the-badge&logo=google&logoColor=white)
 ![GetStream Chat](https://img.shields.io/badge/GetStream_Chat-%23316192.svg?style=for-the-badge&logo=getstream&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Figma](https://img.shields.io/badge/Figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
+![Visual Studio Code](https://img.shields.io/badge/Visual_Studio_Code-%23007ACC.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+
 
 
 
