@@ -67,7 +67,7 @@ export default function Home() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-full text-2xl cursor-pointer"
             onClick={() => {
               if (session) {
-                router.push("/connect");
+                router.push("/match");
               } else {
                 router.push("/profile");
               }
