@@ -137,49 +137,65 @@ export default function Match() {
       try {
         const response = await fetch("/api/mongo");
         const jsonData = await response.json();
-        const thisUserData = jsonData.find(user => user.user_id === thisUser);
+
+        // Assuming `thisUser` matches a unique user.id in jsonData,
+        // and that userResults is structured correctly for your application's needs.
+        const thisUserData = jsonData.find(
+          (user: { user_id: any }) => user.user_id === thisUser
+        );
         if (!thisUserData) {
           console.error("This user data not found");
-          return;
         }
-        const matd = Array.isArray(thisUserData.matched_user_id) ? thisUserData.matched_user_id : [];
 
-        const otherUsers = jsonData.filter(user =>
-          user.user_id !== thisUser &&
-          user.term === thisUserData.term &&
-          user.option === thisUserData.option &&
-          !matd.includes(user.user_id)
+        var otherUsers = jsonData.filter(
+          (user: { user_id: any; term: any; option: any }) =>
+            user.user_id !== thisUser &&
+            user.term === thisUserData.term &&
+            user.option === thisUserData.option
         );
-
-        if (otherUsers.length === 0) {
-          alert("No users found!");
-          return;
-        }
-
-        const thisUserResults = thisUserData.courses.map(course => course.rating);
-        const otherUsersResults = otherUsers.map(user => ({
-          userId: user.user_id,
-          userResults: user.courses.map(course => course.rating),
-        }));
+        const thisUserResults = thisUserData.courses.map(
+          (course: { rating: any }) => course.rating
+        );
+        const otherUsersResults = otherUsers.map(
+          (user: { user_id: any; courses: any[] }) => ({
+            userId: user.user_id,
+            userResults: user.courses.map((course) => course.rating),
+          })
+        );
 
         const matchInfo = run([thisUserResults], otherUsersResults, thisUser as never);
 
-        const matchedUser = jsonData.find(user => user.user_id === matchInfo.userId.toString());
-        const urself = jsonData.find(user => user.user_id === thisUser);
+        var matchedUser = jsonData.find(
+          (user: { user_id: string }) =>
+            user.user_id === matchInfo.userId.toString()
+        );
+        var urself = jsonData.find(
+          (user: { user_id: any }) => user.user_id === thisUser
+        );
+        var strengthx = matchedUser.courses[matchInfo.index1].courseName;
+        var weaknessx = matchedUser.courses[matchInfo.index2].courseName;
+        var user1Name = matchedUser.name;
+        var user2Name = urself.name;
 
-        if (!matchedUser || !urself) {
-          console.error("Matched user or self not found in data");
-          return;
-        }
+        const user1Props: UserProps = {
+          name: user2Name,
+          strength: strengthx,
+          weakness: weaknessx,
+        };
 
-        const strengthx = matchedUser.courses[matchInfo.index1].courseName;
-        const weaknessx = matchedUser.courses[matchInfo.index2].courseName;
-        const user1Name = matchedUser.name;
-        const user2Name = urself.name;
+        const user2Props: UserProps = {
+          name: user1Name,
+          strength: weaknessx,
+          weakness: strengthx,
+        };
 
+        const studentPair: StudentPairProps = {
+          user1: user1Props,
+          user2: user2Props,
+        };
         setStudentPair({
-          user1: { name: user2Name, strength: strengthx, weakness: weaknessx },
-          user2: { name: user1Name, strength: weaknessx, weakness: strengthx },
+          user1: user1Props,
+          user2: user2Props,
         });
 
         if (thisUserData.matched_user_id) {
@@ -199,28 +215,18 @@ export default function Match() {
         setMatchedUserName(user2Props.name)
 
         try {
-          await axios.post("/api/updateMatch", matchedUserInfo);
+          await axios.post("/api/updateMatch", matched_user_info);
           console.log("User data updated successfully");
         } catch (error) {
           console.error("Error updating user data:", error);
         }
 
-        // Update the local matchedList state to include the new match
-        setMatchedList(currentMatchedList => {
-          // Create a new set to avoid duplicate user IDs
-          const newSet = new Set(currentMatchedList.map(item => item.id));
-          // Add the new user ID
-          newSet.add(matchInfo.userId);
-          // Convert the set back to an array
-          return Array.from(newSet).map(id => ({ id }));
-        });
-
       } catch (error) {
         console.error("Error:", error);
       }
     };
-
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thisUser]);
 
   console.log(thisUserId)
