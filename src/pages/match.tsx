@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { AccountCircleOutlined } from "@mui/icons-material";
 
 type UserProps = {
   name: string;
@@ -201,8 +202,10 @@ export default function Match() {
     <div className="flex flex-col items-center justify-center h-screen px-4">
       {/* User 1 */}
       <Image
-        src="./image/avatar.png"
+        src="/image/avatar.png"
         alt="User Avatar"
+        width={100}
+        height={100}
         className="w-24 h-24 rounded-full mb-4"
       />
       <div className="flex justify-between items-center w-full">
@@ -223,8 +226,10 @@ export default function Match() {
       </div>
 
       <Image
-        src="./image/avatar.png"
+        src="/image/avatar.png"
         alt="User Avatar"
+        width={100}
+        height={100}
         className="w-24 h-24 rounded-full mb-4"
       />
       <div className="flex justify-between items-center w-full">
