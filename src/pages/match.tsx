@@ -121,7 +121,6 @@ export default function Match() {
   const [thisUserId, setThisUserId] = useState<string>("");
   const [matchedUserId, setMatchedUserId] = useState<string>("");
 
-
   useEffect(() => {
     if (session && session.user && session.user.id) {
       const userId: string = session.user.id;
@@ -228,8 +227,12 @@ export default function Match() {
   console.log(thisUserId)
   console.log(matchedUserId)
 
+  const user_id = session?.user?.id || '';
+  const userName = session?.user?.name || '';
+  const userToken = session?.user?.token || '';
+
   function chatRoom() {
-    createChatRoom(thisUserId, matchedUserId)
+    createChatRoom(user_id, userName, userToken, thisUserId, matchedUserId)
   }
 
   // createChatRoom("117082830115624728877", "106315073484519680643");

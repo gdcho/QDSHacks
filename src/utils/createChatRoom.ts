@@ -13,13 +13,13 @@ import { useSession } from 'next-auth/react';
 
 // export default createChatRoom;
 
-async function createChatRoom(user_one_id: any, user_two_id: any) {
-    const { data: session } = useSession();
+async function createChatRoom(user_id: any, userName: any, userToken: any, user_one_id: any, user_two_id: any) {
+    // const { data: session } = useSession();
     const apiKey = 'w3pgxt7fwrmm';
     const chatClient = new StreamChat(apiKey);
-    const user_id = session?.user?.id || '';
-    const userName = session?.user?.name || '';
-    const userToken = session?.user?.token || '';
+    // const user_id = session?.user?.id || '';
+    // const userName = session?.user?.name || '';
+    // const userToken = session?.user?.token || '';
 
     console.log(user_id, userName, userToken, user_one_id, user_two_id);
 
