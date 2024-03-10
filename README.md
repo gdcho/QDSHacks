@@ -47,13 +47,13 @@ STREAM_API_SECRET=YOUR_STREAM_API_SECRET
 STREAM_APP_ID=YOUR_STREAM_APP_ID
 ```
 
-4. **Clone Repository**: Clone the repository to your local machine:
+4. **Clone Repository**: Clone the repository to your local machine: `git clone https://github.com/gdcho/QDSHacks'
 
-5. **Install Dependencies**: Navigate to the project directory and install dependencies:
+5. **Install Dependencies**: Navigate to the project directory and install dependencies: 'npm install'
 
-6. **Build Application**: Execute the following command to build the application:
+6. **Build Application**: Execute the following command to build the application: 'npm run build'
 
-7. **Run Locally**: Start the application locally using:
+7. **Run Locally**: Start the application locally using: 'npm run dev'
 
 Now, your application should be up and running locally, ready for use.
 
@@ -63,10 +63,10 @@ Now, your application should be up and running locally, ready for use.
 ## Known Bugs and Limitations
 * During development, due to limitations of the MongoDB database, it was necessary to create and switch between two databases, which resulted in additional complexity.
 
-* While creating a matching collection, it was anticipated that it would facilitate algorithm optimization. However, due to constraints in time and resources, we couldn't execute the plan as thoroughly as desired.
+* While creating a matching collection, it was anticipated that implementing new collection for matched users would facilitate algorithm optimization. However, due to constraints in time and resources, we couldn't execute the plan as thoroughly as desired.
 
 
 ## Features for Future
-* AI Matchmaking for Learning: Integrate AI matchmaking functionality to pair users with AI when there are no matches available. This allows users to study with the assistance of AI, enhancing their learning experience.
+* AI Matchmaking for Learning: Integrate AI matchmaking functionality to pair users with AI when there are no matches available. This allows users to study with the assistance of AI, enhancing their learning experience. Also, when the number of data increase, AI will allow our match making system to deal with large amount of data.
 
 * Points System and Leaderboard: Implement a points system where users earn points by helping others or receiving assistance. These points can be used to climb the leaderboard, encouraging users to actively participate and engage in the community.
