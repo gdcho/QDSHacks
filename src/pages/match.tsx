@@ -222,7 +222,7 @@ export default function Match() {
       }
     };
     fetchData();
-  }, [thisUser]);
+  }, [thisUser, matchedList]);
 
   console.log(thisUserId)
   console.log(matchedUserId)
@@ -233,6 +233,7 @@ export default function Match() {
 
   function chatRoom() {
     createChatRoom(user_id, userName, userToken, thisUserId, matchedUserId)
+    router.push("/connect");
   }
 
   // createChatRoom("117082830115624728877", "106315073484519680643");
