@@ -16,13 +16,8 @@ async function createChatRoom(
     // const userName = session?.user?.name || '';
     // const userToken = session?.user?.token || '';
 
-    console.log(user_id, userName, userToken, user_one_id, user_two_id, user_one_name, user_two_name);
-
     const user_one_name_no_space = user_one_name.replace(/\s/g, "");
     const user_two_name_no_space = user_two_name.replace(/\s/g, "");
-
-    console.log(user_one_name_no_space);
-    console.log(user_two_name_no_space);
 
     const user = {
         id: user_id,

@@ -232,7 +232,7 @@ export default function Match() {
 
         try {
           await axios.post("/api/updateMatch", matchedUserInfo);
-          console.log("User data updated successfully");
+          // console.log("User data updated successfully");
         } catch (error) {
           console.error("Error updating user data:", error);
         }
@@ -253,9 +253,6 @@ export default function Match() {
 
     fetchData();
   }, [thisUser]);
-
-  console.log(thisUserId);
-  console.log(matchedUserId);
 
   const user_id = session?.user?.id || "";
   const userName = session?.user?.name || "";

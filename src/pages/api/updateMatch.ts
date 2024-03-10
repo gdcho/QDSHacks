@@ -8,7 +8,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ message: 'Method not allowed' });
     }
     try {
-        console.log("inside api");
         const { user_id, matched_user_id } = req.body;
 
         const db = await connectToDatabase();
