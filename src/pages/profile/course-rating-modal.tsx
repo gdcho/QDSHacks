@@ -1,20 +1,17 @@
 import React from "react";
-import {
-  Modal,
-  Box,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-} from "@mui/material";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import Rating from "@mui/material/Rating"; // Import Rating from MUI
+import { Typography } from "@mui/material";
 
 interface CourseRatingModalProps {
   isOpen: boolean;
   onClose: () => void;
   courseName: string;
   saveRating: (courseName: string, rating: string) => void;
-  currentRating: string;
+  currentRating: string; // Make sure this is a number to work with Rating
 }
 
 export default function CourseRatingModal({
@@ -24,16 +21,17 @@ export default function CourseRatingModal({
   saveRating,
   currentRating,
 }: CourseRatingModalProps) {
-  const [rating, setRating] = React.useState(currentRating);
+  // Convert currentRating to a number as Rating component works with numbers
+  const [rating, setRating] = React.useState<number>(Number(currentRating));
 
   React.useEffect(() => {
-    // Update rating state when currentRating changes
-    setRating(currentRating);
+    // Update rating state when currentRating changes, converting to number
+    setRating(Number(currentRating));
   }, [currentRating]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newRating = event.target.value;
-    setRating(newRating);
+  const handleChange = (event: React.SyntheticEvent, newValue: number | null) => {
+    const newRating = newValue?.toString() || "0"; // Convert the rating back to string if needed
+    setRating(Number(newRating));
     saveRating(courseName, newRating);
     onClose();
   };
@@ -63,38 +61,15 @@ export default function CourseRatingModal({
           <FormLabel component="legend" className="mb-3">
             {courseName}
           </FormLabel>
-          <RadioGroup
-            aria-label="rating"
-            name="radio-buttons-group"
+          {/* Use Rating component here */}
+          <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
+            Accurately rate your knowledge level/comfortability for this class.
+          </Typography>
+          <Rating
+            name="course-rating"
             value={rating}
             onChange={handleChange}
-          >
-            <FormControlLabel
-              value="1"
-              control={<Radio />}
-              label="1 - Least Confident"
-            />
-            <FormControlLabel
-              value="2"
-              control={<Radio />}
-              label="2 - Somewhat Confident"
-            />
-            <FormControlLabel
-              value="3"
-              control={<Radio />}
-              label="3 - Moderately Confident"
-            />
-            <FormControlLabel
-              value="4"
-              control={<Radio />}
-              label="4 - Confident"
-            />
-            <FormControlLabel
-              value="5"
-              control={<Radio />}
-              label="5 - Most Confident"
-            />
-          </RadioGroup>
+          />
         </FormControl>
       </Box>
     </Modal>
