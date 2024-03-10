@@ -159,6 +159,13 @@ export default function ProfileForm() {
       })),
     };
 
+    updateProfile(userProfileUpdate).then(() => {
+      console.log('Profile updated successfully');
+    }).catch((error: any) => {
+      console.error('Error updating profile', error);
+    });
+
+
     setIsEditMode(false);
     console.log(userProfileUpdate);
 
@@ -295,7 +302,7 @@ export default function ProfileForm() {
                 color={
                   courseRatings[course as keyof typeof courseRatings] !==
                     undefined &&
-                  courseRatings[course as keyof typeof courseRatings] !== null
+                    courseRatings[course as keyof typeof courseRatings] !== null
                     ? "primary"
                     : "default"
                 }
@@ -332,7 +339,7 @@ export default function ProfileForm() {
           courseName={selectedCourseForRating}
           currentRating={
             courseRatings[
-              selectedCourseForRating as keyof typeof courseRatings
+            selectedCourseForRating as keyof typeof courseRatings
             ] || ""
           }
           saveRating={saveCourseRating}

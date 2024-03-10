@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             { $set: { name, session_email, program, term, option, courses } }
         );
 
-        if(result.matchedCount === 0) {
+        if (result.matchedCount === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
 
