@@ -3,7 +3,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import Rating from "@mui/material/Rating"; // Import Rating from MUI
+import Rating from "@mui/material/Rating"; 
 import { Typography } from "@mui/material";
 
 interface CourseRatingModalProps {
@@ -29,7 +29,10 @@ export default function CourseRatingModal({
     setRating(Number(currentRating));
   }, [currentRating]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number | null) => {
+  const handleChange = (
+    event: React.SyntheticEvent,
+    newValue: number | null
+  ) => {
     const newRating = newValue?.toString() || "0"; // Convert the rating back to string if needed
     setRating(Number(newRating));
     saveRating(courseName, newRating);
@@ -49,12 +52,14 @@ export default function CourseRatingModal({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 300,
+          width: 280,
+          height: 230,
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
           borderRadius: 5,
           border: "1px solid #e0e0e0",
+          textAlign: "center",
         }}
       >
         <FormControl component="fieldset" sx={{ mt: 2 }}>
@@ -62,14 +67,17 @@ export default function CourseRatingModal({
             {courseName}
           </FormLabel>
           {/* Use Rating component here */}
-          <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
-            Accurately rate your knowledge level/comfortability for this class.
+          <Typography variant="body1" gutterBottom textAlign="center">
+            Rate your knowledge / comfortability for this class
           </Typography>
-          <Rating
-            name="course-rating"
-            value={rating}
-            onChange={handleChange}
-          />
+          <div className="mt-3">
+            <Rating
+              name="course-rating"
+              value={rating}
+              onChange={handleChange}
+              size="large"
+            />
+          </div>
         </FormControl>
       </Box>
     </Modal>
