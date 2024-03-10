@@ -7,7 +7,7 @@ import {
     MessageList,
     Thread,
     Window,
-    ChannelList,
+    ChannelList
 } from 'stream-chat-react';
 
 import 'stream-chat-react/dist/css/v2/index.css';
@@ -27,13 +27,12 @@ const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoic21hbGwt
 const chatClient = new StreamChat(apiKey);
 chatClient.connectUser(user, userToken);
 
-const channel = chatClient.channel('messaging', 'custom_channel_id_three', {
+const channel = chatClient.channel('messaging', 'custom_channel_id', {
     // add as many custom fields as you'd like
     image: 'https://www.drupal.org/files/project-images/react.png',
-    name: 'Talk about React three',
+    name: 'Talk about React',
     members: [userId, "small-wildflower-0"],
 });
-
 const sort: ChannelSort = { last_message_at: -1 };
 const filters: ChannelFilters = {
     type: 'messaging',
@@ -42,11 +41,10 @@ const filters: ChannelFilters = {
 const options: ChannelOptions = {
     limit: 10,
 };
-
 const App = () => (
     <Chat client={chatClient} theme='str-chat__theme-light'>
         <ChannelList filters={filters} sort={sort} options={options} />
-        <Channel channel={channel}>
+        <Channel>
             <Window>
                 <ChannelHeader />
                 <MessageList />
