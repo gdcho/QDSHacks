@@ -71,7 +71,7 @@ export default function Home() {
             <div className="flex flex-col items-center mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-lg text-2xl cursor-pointer"
-              onClick={() => router.push('/connect')}
+              onClick={() => router.push('/matchToMerge')}
             >
               Find your buddy!
             </button>
