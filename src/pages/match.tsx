@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Avatar, Box, Typography, Paper } from "@mui/material";
 import { North } from "@mui/icons-material";
-import { match } from "assert";
+import { useRouter } from "next/router";
 import axios from "axios";
 import createChatRoom from "@/utils/createChatRoom";
 type UserProps = {
@@ -120,6 +120,7 @@ export default function Match() {
   const [thisUserName, setThisUserName] = useState<string>("");
   const [matchedUserName, setMatchedUserName] = useState<string>("");
   const [matchedUserId, setMatchedUserId] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     if (session && session.user && session.user.id) {
@@ -171,13 +172,11 @@ export default function Match() {
         );
 
         const matchInfo = run(
-          
           [thisUserResults],
-         
+
           otherUsersResults,
-         
+
           thisUser as never
-        
         );
 
         var matchedUser = jsonData.find(
@@ -226,6 +225,10 @@ export default function Match() {
           user_id: thisUserData.user_id,
           matched_user_id: [...existingMatches, matchInfo.userId],
         };
+        setThisUserId(matchInfo.userId);
+        setMatchedUserId(matchInfo.requestId);
+        setThisUserName(user1Props.name);
+        setMatchedUserName(user2Props.name);
 
         try {
           await axios.post("/api/updateMatch", matchedUserInfo);
@@ -294,29 +297,18 @@ export default function Match() {
       {/* Arrows */}
       <Box className="flex justify-between items-center w-full my-8">
         <North className="text-6xl my-8 transform scale-125" />
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-full text-2xl cursor-pointer"
+          onClick={() => chatRoom()}
+        >
+          Chat
+        </button>
         <North className="text-6xl my-8 transform rotate-180 scale-125" />
       </Box>
       {/* User 1 */}
       <Typography variant="h6">{studentPair?.user1.name}</Typography>
       <Avatar
         src="/image/avatar.png"
-      <div className="flex justify-between items-center w-full my-8">
-        <div className="text-9xl transform rotate-180 my-4">&#8593;</div>{" "}
-        {/* Arrow pointing down */}
-        <div className="text-9xl my-4">&#8593;</div>
-      </div>
-
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-full text-2xl cursor-pointer"
-        onClick={() => chatRoom()}
-      >
-        Chat
-      </button>
-
-      <Image
-        src="/image/avatar.png"
-        width={100}
-        height={100}
         alt="User Avatar"
         style={{ width: 100, height: 100 }}
         className="mb-4 mt-2"
