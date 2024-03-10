@@ -30,10 +30,7 @@ export const useClient = ({
             setChatClient(undefined);
             // wait for connection to finish before initiating closing sequence
             connectionPromise
-                .then(() => client.disconnectUser())
-                .then(() => {
-                    console.log('connection closed');
-                });
+                .then(() => client.disconnectUser());
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps -- should re-run only if user.id changes
     }, [apiKey, user.id, tokenOrProvider]);

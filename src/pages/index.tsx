@@ -18,11 +18,6 @@ export default function Home() {
 
         setUserData(jsonData);
 
-        console.log("Data received:", jsonData);
-
-        //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTE3MDgyODMwMTE1NjI0NzI4ODc3In0.5BeXej7tBUUxaQIqhZKNZhtlp_w4AeYtKVBx9wvANVc
-
-        //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTE3MDgyODMwMTE1NjI0NzI4ODc3In0.5BeXej7tBUUxaQIqhZKNZhtlp_w4AeYtKVBx9wvANVc"
         if (
           session &&
           !jsonData.some(
@@ -30,13 +25,11 @@ export default function Home() {
           )
         ) {
           try {
-            console.log("Session:", session);
             await axios.post("/api/addUser", {
               user_id: session.user?.id,
               name: session.user?.name,
               session_email: session.user?.email,
             });
-            console.log("User data inserted successfully");
           } catch (error) {
             console.error("Error inserting user data:", error);
           }

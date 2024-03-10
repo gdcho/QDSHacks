@@ -159,18 +159,15 @@ export default function ProfileForm() {
 
     updateProfile(userProfileUpdate)
       .then(() => {
-        console.log("Profile updated successfully");
       })
       .catch((error: any) => {
         console.error("Error updating profile", error);
       });
 
     setIsEditMode(false);
-    console.log(userProfileUpdate);
 
     updateProfile(userProfileUpdate)
       .then(() => {
-        console.log("Profile updated successfully");
       })
       .catch((error: any) => {
         console.error("Error updating profile", error);
