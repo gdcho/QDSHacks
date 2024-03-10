@@ -30,7 +30,7 @@ const StressStatsDisplay = () => {
       loader={<h4>Loading...</h4>}
       endMessage={
         <p style={{ textAlign: "center" }}>
-          <b>You have seen all the data!</b>
+          <b>QDS Hacks Stress Buddy</b>
         </p>
       }
     >
@@ -45,6 +45,7 @@ const StressStatsDisplay = () => {
               href={item.link.toString()}
               target="_blank"
               rel="noopener noreferrer"
+              className="underline"
             >
               Click for reference redirect
             </a>
