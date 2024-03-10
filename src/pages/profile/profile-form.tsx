@@ -38,7 +38,7 @@ function isTermData(termCourses: string[] | TermData): termCourses is TermData {
 
 export default function ProfileForm() {
   const { data: session } = useSession();
-  const [isEditMode, setIsEditMode] = useState<boolean>(true);
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [selectedTerm, setSelectedTerm] = useState("1");
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
   const [availableCourses, setAvailableCourses] = useState<string[]>([]);
