@@ -9,7 +9,6 @@ export default function Home() {
   const router = useRouter();
   const { data: session } = useSession();
   const [userData, setUserData] = useState([]);
-  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,7 +71,7 @@ export default function Home() {
             <div className="flex flex-col items-center mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-lg text-2xl cursor-pointer"
-              onClick={() => router.push('/connect')}
+              onClick={() => router.push('/match')}
             >
               Find your buddy!
             </button>
