@@ -147,12 +147,23 @@ export default function Match() {
           console.error("This user data not found");
         }
 
+        const previouslyMatchedUserIds = Array.isArray(
+          thisUserData.matched_user_id
+        )
+          ? thisUserData.matched_user_id
+          : [];
+
         var otherUsers = jsonData.filter(
           (user: { user_id: any; term: any; option: any }) =>
             user.user_id !== thisUser &&
             user.term === thisUserData.term &&
-            user.option === thisUserData.option
+            user.option === thisUserData.option &&
+            !previouslyMatchedUserIds.includes(user.user_id)
         );
+        if (otherUsers.length === 0) {
+          alert("No users found!");
+          return;
+        }
         const thisUserResults = thisUserData.courses.map(
           (course: { rating: any }) => course.rating
         );
@@ -163,7 +174,11 @@ export default function Match() {
           })
         );
 
-        const matchInfo = run([thisUserResults], otherUsersResults, thisUser as never);
+        const matchInfo = run(
+          [thisUserResults],
+          otherUsersResults,
+          thisUser as never
+        );
 
         var matchedUser = jsonData.find(
           (user: { user_id: string }) =>
@@ -194,50 +209,65 @@ export default function Match() {
           user2: user2Props,
         };
         setStudentPair({
-          user1: user1Props,
-          user2: user2Props,
+          user1: { name: user2Name, strength: strengthx, weakness: weaknessx },
+          user2: { name: user1Name, strength: weaknessx, weakness: strengthx },
         });
-
-        if (thisUserData.matched_user_id) {
-          const newItem = { id: thisUserData.matched_user_id };
-          setMatchedList([...matchedList, newItem]);
-          console.log(matchedList);
+        if (!thisUserData) {
+          console.error("This user data not found");
+          return;
         }
 
-        const newItem = { id: matchInfo.userId };
-        setMatchedList([...matchedList, newItem]);
-        console.log(matchedList);
+        // Initialize matched_user_id as an array if it's not already
+        const existingMatches = Array.isArray(thisUserData.matched_user_id)
+          ? thisUserData.matched_user_id
+          : [];
 
-        const matched_user_info = { user_id: matchInfo.requestId, matched_user_id: matchedList };
-        setThisUserId(matchInfo.userId);
-        setMatchedUserId(matchInfo.requestId);
-        setThisUserName(user1Props.name);
-        setMatchedUserName(user2Props.name)
+        const matchedUserInfo = {
+          user_id: thisUserData.user_id,
+          matched_user_id: [...existingMatches, matchInfo.userId],
+        };
 
         try {
-          await axios.post("/api/updateMatch", matched_user_info);
+          await axios.post("/api/updateMatch", matchedUserInfo);
           console.log("User data updated successfully");
         } catch (error) {
           console.error("Error updating user data:", error);
         }
 
+        // Update the local matchedList state to include the new match
+        setMatchedList((currentMatchedList) => {
+          // Create a new set to avoid duplicate user IDs
+          const newSet = new Set(currentMatchedList.map((item) => item.id));
+          // Add the new user ID
+          newSet.add(matchInfo.userId);
+          // Convert the set back to an array
+          return Array.from(newSet).map((id) => ({ id }));
+        });
       } catch (error) {
         console.error("Error:", error);
       }
     };
+
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thisUser]);
 
-  console.log(thisUserId)
-  console.log(matchedUserId)
+  console.log(thisUserId);
+  console.log(matchedUserId);
 
-  const user_id = session?.user?.id || '';
-  const userName = session?.user?.name || '';
-  const userToken = session?.user?.token || '';
+  const user_id = session?.user?.id || "";
+  const userName = session?.user?.name || "";
+  const userToken = session?.user?.token || "";
 
   function chatRoom() {
-    createChatRoom(user_id, userName, userToken, thisUserId, matchedUserId, thisUserName, matchedUserName)
+    createChatRoom(
+      user_id,
+      userName,
+      userToken,
+      thisUserId,
+      matchedUserId,
+      thisUserName,
+      matchedUserName
+    );
     router.push("/connect");
   }
 
@@ -280,7 +310,8 @@ export default function Match() {
       <Image
         src="/image/avatar.png"
         width={100}
-        height={100} alt="User Avatar"
+        height={100}
+        alt="User Avatar"
         className="w-24 h-24 rounded-full mb-4"
       />
       <div className="flex justify-between items-center w-full">
