@@ -148,7 +148,7 @@ export default function ProfileForm() {
     }).catch((error: any) => {
       console.error('Error updating profile', error);
     });
-    
+
 
     setIsEditMode(false);
     console.log(userProfileUpdate);
@@ -285,7 +285,7 @@ export default function ProfileForm() {
               courseName={selectedCourseForRating}
               currentRating={
                 courseRatings[
-                  selectedCourseForRating as keyof typeof courseRatings
+                selectedCourseForRating as keyof typeof courseRatings
                 ] || ""
               }
               saveRating={saveCourseRating}

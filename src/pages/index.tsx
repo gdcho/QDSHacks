@@ -19,8 +19,10 @@ export default function Home() {
         setUserData(jsonData);
 
         console.log('Data received:', jsonData);
-        
 
+        //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTE3MDgyODMwMTE1NjI0NzI4ODc3In0.5BeXej7tBUUxaQIqhZKNZhtlp_w4AeYtKVBx9wvANVc
+
+        //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTE3MDgyODMwMTE1NjI0NzI4ODc3In0.5BeXej7tBUUxaQIqhZKNZhtlp_w4AeYtKVBx9wvANVc"
         if (session && !jsonData.some((user: { user_id: string; }) => user.user_id === session.user?.id)) {
           try {
             console.log('Session:', session);
@@ -56,19 +58,19 @@ export default function Home() {
         <div className="px-4 md:px-0 text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
           Welcome to <strong>StressBuddies</strong>!
           <div className="flex justify-center mt-4">
-            
-            <div className="relative h-40 w-80"> 
+
+            <div className="relative h-40 w-80">
               <Image
                 fill
                 sizes="(max-width: 768px) 50vw, (max-width: 1200px) 30vw, 30vw"
-                className="object-contain" 
+                className="object-contain"
                 src="/image/site_logo.png"
                 alt="Site logo"
                 priority
               />
             </div>
-            </div>
-            <div className="flex flex-col items-center mt-4">
+          </div>
+          <div className="flex flex-col items-center mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-lg text-2xl cursor-pointer"
               onClick={() => router.push('/connect')}
@@ -76,8 +78,8 @@ export default function Home() {
               Find your buddy!
             </button>
           </div>
-            <br></br>
-            <div className="bg-gray-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
+          <br></br>
+          <div className="bg-gray-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
             <p className="text-gray-600 dark:text-gray-800">
               At <strong>StressBuddies</strong> we aim to tackle the problem at the root cause.
               The main cause of stress in students comes from overloaded workload and hard assignments.
@@ -89,7 +91,7 @@ export default function Home() {
           {/* <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md my-8">
             <StressStatsDisplay />
           </div> */}
-        </div>   
+        </div>
       )}
     </div>
   );
