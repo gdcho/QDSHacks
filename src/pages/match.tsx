@@ -119,6 +119,8 @@ export default function Match() {
   const [studentPair, setStudentPair] = useState<StudentPairProps | null>(null);
   const [matchedList, setMatchedList] = useState<any[]>([]);
   const [thisUserId, setThisUserId] = useState<string>("");
+  const [thisUserName, setThisUserName] = useState<string>("");
+  const [matchedUserName, setMatchedUserName] = useState<string>("");
   const [matchedUserId, setMatchedUserId] = useState<string>("");
 
   useEffect(() => {
@@ -207,8 +209,10 @@ export default function Match() {
         console.log(matchedList);
 
         const matched_user_info = { user_id: matchInfo.requestId, matched_user_id: matchedList };
-        setThisUserId(matchInfo.userId)
-        setMatchedUserId(matchInfo.requestId)
+        setThisUserId(matchInfo.userId);
+        setMatchedUserId(matchInfo.requestId);
+        setThisUserName(user1Props.name);
+        setMatchedUserName(user2Props.name)
 
         try {
           await axios.post("/api/updateMatch", matched_user_info);
@@ -232,7 +236,7 @@ export default function Match() {
   const userToken = session?.user?.token || '';
 
   function chatRoom() {
-    createChatRoom(user_id, userName, userToken, thisUserId, matchedUserId)
+    createChatRoom(user_id, userName, userToken, thisUserId, matchedUserId, thisUserName, matchedUserName)
     router.push("/connect");
   }
 
