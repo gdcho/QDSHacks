@@ -115,6 +115,7 @@ export default function Match() {
   const { data: session } = useSession();
   const [thisUser, setThisUser] = useState<string | null>(null);
   const [studentPair, setStudentPair] = useState<StudentPairProps | null>(null);
+  const [matchedUserInfo, setMatchedUserInfo] = useState({});
 
   useEffect(() => {
     if (session && session.user && session.user.id) {
@@ -170,38 +171,50 @@ export default function Match() {
         var user1Name = matchedUser.name;
         var user2Name = urself.name;
 
-        const user1Props: UserProps = {
-          name: user2Name,
-          strength: strengthx,
-          weakness: weaknessx,
-        };
+        const matched_user_info = { user_id: matchInfo.requestId, matched_user_id: matchInfo.userId };
+        setMatchedUserInfo(matched_user_info);
+        // updateMatches(matched_user_info);
 
-        const user2Props: UserProps = {
-          name: user1Name,
-          strength: weaknessx,
-          weakness: strengthx,
-        };
-
-        const studentPair: StudentPairProps = {
-          user1: user1Props,
-          user2: user2Props,
-        };
-        setStudentPair({
-          user1: user1Props,
-          user2: user2Props,
-        });
       } catch (error) {
         console.error("Error:", error);
       }
     };
-
     fetchData();
   }, [thisUser]);
+
+
+  useEffect(() => {
+    const updateMatches = async () => {
+      // const matched_user_info = { matchedUserInfo.user_id, matchedUserInfo.matched_user_id };
+      try {
+        console.log("updating matches")
+        const response = await fetch("/api/updateMatch", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(matchedUserInfo),
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("Error during API call:", error);
+        throw error;
+      }
+    };
+    updateMatches();
+  }, [matchedUserInfo]);
+
+
   return (
     <div className="flex flex-col items-center justify-center h-screen px-4">
       {/* User 1 */}
       <Image
-        src="./image/avatar.png"
+        src="/image/avatar.png"
+        width={100}
+        height={100}
         alt="User Avatar"
         className="w-24 h-24 rounded-full mb-4"
       />
@@ -223,8 +236,9 @@ export default function Match() {
       </div>
 
       <Image
-        src="./image/avatar.png"
-        alt="User Avatar"
+        src="/image/avatar.png"
+        width={100}
+        height={100} alt="User Avatar"
         className="w-24 h-24 rounded-full mb-4"
       />
       <div className="flex justify-between items-center w-full">
