@@ -57,7 +57,7 @@ export default function ProfileForm() {
     setModalOpen(false);
   };
 
-  const formControlWidth = { width: 350 };
+  const formControlWidth = { width: 340 };
 
   useEffect(() => {
     const termCourses = coursesByTerm[selectedTerm];

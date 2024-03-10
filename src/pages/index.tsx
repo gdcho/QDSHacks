@@ -60,21 +60,20 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="flex flex-col items-center mt-4">
+        <div className="flex flex-col items-center my-8">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-full text-2xl cursor-pointer"
             onClick={() => {
               if (session) {
                 router.push("/match");
               } else {
-                window.scrollTo(0, 500);
+                window.scrollTo(0, 600);
               }
             }}
           >
-            Find your buddy
+            {session ? "Find your buddy" : "Learn more"}
           </button>
         </div>
-        <br></br>
         <div className="bg-gray-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
           <p className="text-gray-600 dark:text-gray-800">
             At <strong>StressBuddies</strong> we aim to tackle the problem at
@@ -85,42 +84,63 @@ export default function Home() {
             tackling the root problem.
           </p>
         </div>
-        <br></br>
-        <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md my-8">
+        {session ? (
+          <div className="bg-green-100 text-gray-600 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md my-8">
             <StressStatsDisplay />
           </div>
-        <div className="flex flex-col space-y-8">
-          {/* Step 1 Box */}
-          <div className="bg-gray-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
-            <p className="text-gray-600 dark:text-gray-800">
-              Heres a guide for how to use <strong>StressBuddies</strong>! Please make sure to read all of it!
-            </p>
+        ) : (
+          <div className="flex flex-col space-y-6">
+            {/* Step 1 Box */}
+            <div className="bg-gray-200 text-center p-4 mx-4 mt-5 md:mx-0 rounded-lg shadow-md">
+              <p className="text-gray-600 dark:text-gray-800">
+                Heres a guide for how to use <strong>StressBuddies</strong>!
+                Please make sure to read all of it!
+              </p>
+            </div>
+            <div className="bg-green-100 text-gray-600 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
+              <p>
+                <strong>Step 1:</strong> To get started, you would need to the
+                profile page, and select your term.
+              </p>
+            </div>
+
+            {/* Black line separator */}
+            <div className="bg-black h-0.5 mx-4 md:mx-0"></div>
+
+            {/* Step 2 Box */}
+            <div className="bg-green-100 text-gray-600 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
+              <p>
+                <strong>Step 2:</strong> After selecting your term you can begin
+                rating your knowledge level for each of your courses.
+              </p>
+              <Image
+                src="/image/Step2.png"
+                alt="Step 2"
+                width={300}
+                height={300}
+                className="mx-auto rounded-lg my-3"
+              />
+            </div>
+
+            <div className="bg-black h-0.5 mx-4 md:mx-0"></div>
+
+            {/* Step 3 Box */}
+            <div className="bg-green-100 text-gray-600 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
+              <p>
+                <strong>Step 3:</strong> After choosing your knowledge level for
+                all classes, you can click on Home and click, Find Your Buddy
+                button to find a work parter for you.
+              </p>
+              <Image
+                src="/image/Step3.png"
+                alt="Step 3"
+                width={300}
+                height={300}
+                className="mx-auto rounded-lg my-3"
+              />
+            </div>
           </div>
-          <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
-            <p><strong>Step 1:</strong> To get started, you would need to the profile page,
-              and select your term.</p>
-
-          </div>
-
-          {/* Black line separator */}
-          <div className="bg-black h-0.5 mx-4 md:mx-0"></div>
-
-          {/* Step 2 Box */}
-          <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
-            <p><strong>Step 2:</strong> After selecting your term you can begin rating your knowledge level for each of your courses.</p>
-            <img src="./image/Step2.png" alt="Step 2" className="mx-auto" />
-          </div>
-
-          {/* Black line separator */}
-          <div className="bg-black h-0.5 mx-4 md:mx-0"></div>
-
-          {/* Step 3 Box */}
-          <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md">
-            <p><strong>Step 3:</strong> After choosing your knowledge level for all classes, you can click on Home and click,
-              Find Your Buddy button to find a work parter for you.</p>
-            <img src="./image/Step3.png" alt="Step 3" className="mx-auto" />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
