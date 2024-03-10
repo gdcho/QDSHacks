@@ -70,3 +70,62 @@ Now, your application should be up and running locally, ready for use.
 * AI Matchmaking for Learning: Integrate AI matchmaking functionality to pair users with AI when there are no matches available. This allows users to study with the assistance of AI, enhancing their learning experience. Also, when the number of data increase, AI will allow our match making system to deal with large amount of data.
 
 * Points System and Leaderboard: Implement a points system where users earn points by helping others or receiving assistance. These points can be used to climb the leaderboard, encouraging users to actively participate and engage in the community.
+
+
+## File Structure
+```
+📦 QDSHacksTeam6
+├── QDSHacks
+├── README.md
+├── next-env.d.ts
+├── next.config.mjs
+├── node_modules
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── public
+│   ├── image
+│   ├── next.svg
+│   └── vercel.svg
+├── src
+│   ├── components
+│   │   ├── data
+│   │   ├── layout
+│   │   └── shared
+│   ├── hooks
+│   │   └── useClient.ts
+│   ├── pages
+│   │   ├── _app.tsx
+│   │   ├── _document.tsx
+│   │   ├── api
+│   │   ├── connect.tsx
+│   │   ├── favicon.ico
+│   │   ├── index.tsx
+│   │   ├── login.tsx
+│   │   ├── match.tsx
+│   │   ├── profile
+│   │   ├── profile.tsx
+│   │   └── stressStatsDisplay.tsx
+│   ├── styles
+│   │   └── globals.css
+│   └── utils
+│       ├── createChatRoom.ts
+│       └── mongodb.ts
+├── tailwind.config.ts
+├── tsconfig.json
+└── types
+    └── next-auth.d.ts
+```
+
+## References
+* [Next.js](https://nextjs.org/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [Tailwind CSS](https://tailwindcss.com/)
+* [MongoDB](https://www.mongodb.com/)
+* [Google OAuth](https://developers.google.com/identity/protocols/oauth2)
+* [GetStream Chat](https://getstream.io/chat/)
+* [Figma](https://www.figma.com/)
+* [Visual Studio Code](https://code.visualstudio.com/)
+
+## Credits
+<img src="https://www.go2hr.ca/wp-content/uploads/2023/04/Box-Logo-Blue.png"/>
