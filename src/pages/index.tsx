@@ -9,7 +9,6 @@ export default function Home() {
   const router = useRouter();
   const { data: session } = useSession();
   const [userData, setUserData] = useState([]);
-  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +53,7 @@ export default function Home() {
           <code className="font-mono font-bold">src/pages/index.tsx</code>
         </p>
       ) : (
-        <p className="px-4 md:px-0 text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
+        <div className="px-4 md:px-0 text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
           Welcome to <strong>StressBuddies</strong>!
           <div className="flex justify-center mt-4">
             
@@ -87,11 +86,10 @@ export default function Home() {
             </p>
           </div>
           <br></br>
-          <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md my-8">
+          {/* <div className="bg-green-200 text-center p-4 mx-4 md:mx-0 rounded-lg shadow-md my-8">
             <StressStatsDisplay />
-          </div>
-        </p>
-        
+          </div> */}
+        </div>   
       )}
     </div>
   );
