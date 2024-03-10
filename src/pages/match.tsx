@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { match } from "assert";
 import axios from "axios";
-
+import createChatRoom from "@/utils/createChatRoom";
 type UserProps = {
   name: string;
   strength: string;
@@ -118,6 +118,8 @@ export default function Match() {
   const [thisUser, setThisUser] = useState<string | null>(null);
   const [studentPair, setStudentPair] = useState<StudentPairProps | null>(null);
   const [matchedList, setMatchedList] = useState<any[]>([]);
+  const [thisUserId, setThisUserId] = useState<string>("");
+  const [matchedUserId, setMatchedUserId] = useState<string>("");
 
   useEffect(() => {
     if (session && session.user && session.user.id) {
@@ -213,6 +215,18 @@ export default function Match() {
     fetchData();
   }, [thisUser]); 
 
+  console.log(thisUserId)
+  console.log(matchedUserId)
+
+  const user_id = session?.user?.id || '';
+  const userName = session?.user?.name || '';
+  const userToken = session?.user?.token || '';
+
+  function chatRoom() {
+    createChatRoom(user_id, userName, userToken, thisUserId, matchedUserId)
+  }
+
+  // createChatRoom("117082830115624728877", "106315073484519680643");
 
   return (
     <div className="flex flex-col items-center justify-center h-screen px-4">
@@ -240,6 +254,13 @@ export default function Match() {
         {/* Arrow pointing down */}
         <div className="text-9xl my-4">&#8593;</div>
       </div>
+
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-full text-2xl cursor-pointer"
+        onClick={() => chatRoom()}
+      >
+        Chat
+      </button>
 
       <Image
         src="/image/avatar.png"
