@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import { StreamChat } from "stream-chat";
 
 // const createChat = async () => {
@@ -24,20 +24,23 @@ import { StreamChat } from "stream-chat";
 
 const createToken = () => {
     const jwt = require('jsonwebtoken');
-    const { data: session } = useSession();
+    //const { data: session } = useSession();
     const apiKey = process.env.STREAM_API_KEY;
     const apiSecret = process.env.STREAM_API_SECRET;
     //const userId = session?.user?.id;
     const userId = "small-wildflower-0"
-    const payload = {
-        user_id: userId,
-    };
 
-    const userToken = jwt.sign(payload, apiSecret, {
-        algorithm: 'HS256',
-        issuer: apiKey,
-    });
-    console.log(userId);
+    // const userToken = jwt.sign(payload, apiSecret, {
+    //     algorithm: 'HS256',
+    //     issuer: apiKey,
+    // });
+    // console.log(userId);
+    // console.log('User Token:', userToken);
+
+    const chatClient = new StreamChat(apiKey, apiSecret);
+
+    const userToken = chatClient.createToken(userId);
+
     console.log('User Token:', userToken);
 }
 

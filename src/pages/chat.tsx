@@ -41,6 +41,8 @@ const filters: ChannelFilters = {
 const options: ChannelOptions = {
     limit: 10,
 };
+
+
 const App = () => (
     <Chat client={chatClient} theme='str-chat__theme-light'>
         <ChannelList filters={filters} sort={sort} options={options} />
