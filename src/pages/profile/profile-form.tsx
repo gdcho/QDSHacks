@@ -57,7 +57,6 @@ export default function ProfileForm() {
     setModalOpen(false);
   };
 
-  // Standard width for all form controls
   const formControlWidth = { width: 350 };
 
   useEffect(() => {
@@ -82,7 +81,6 @@ export default function ProfileForm() {
     const newTerm = event.target.value;
     setSelectedTerm(newTerm);
     setSelectedOption("");
-    // Reset courses selection on term change
     setSelectedCourses([]);
   };
 
@@ -159,17 +157,17 @@ export default function ProfileForm() {
       })),
     };
 
-    updateProfile(userProfileUpdate).then(() => {
-      console.log('Profile updated successfully');
-    }).catch((error: any) => {
-      console.error('Error updating profile', error);
-    });
-
+    updateProfile(userProfileUpdate)
+      .then(() => {
+        console.log("Profile updated successfully");
+      })
+      .catch((error: any) => {
+        console.error("Error updating profile", error);
+      });
 
     setIsEditMode(false);
     console.log(userProfileUpdate);
 
-    // Assuming you have a function to actually persist the update, it would go here
     updateProfile(userProfileUpdate)
       .then(() => {
         console.log("Profile updated successfully");
@@ -302,7 +300,7 @@ export default function ProfileForm() {
                 color={
                   courseRatings[course as keyof typeof courseRatings] !==
                     undefined &&
-                    courseRatings[course as keyof typeof courseRatings] !== null
+                  courseRatings[course as keyof typeof courseRatings] !== null
                     ? "primary"
                     : "default"
                 }
@@ -339,7 +337,7 @@ export default function ProfileForm() {
           courseName={selectedCourseForRating}
           currentRating={
             courseRatings[
-            selectedCourseForRating as keyof typeof courseRatings
+              selectedCourseForRating as keyof typeof courseRatings
             ] || ""
           }
           saveRating={saveCourseRating}

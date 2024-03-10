@@ -18,12 +18,17 @@ export default function Home() {
 
         setUserData(jsonData);
 
-        console.log('Data received:', jsonData);
+        console.log("Data received:", jsonData);
 
         //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTE3MDgyODMwMTE1NjI0NzI4ODc3In0.5BeXej7tBUUxaQIqhZKNZhtlp_w4AeYtKVBx9wvANVc
 
         //"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMTE3MDgyODMwMTE1NjI0NzI4ODc3In0.5BeXej7tBUUxaQIqhZKNZhtlp_w4AeYtKVBx9wvANVc"
-        if (session && !jsonData.some((user: { user_id: string; }) => user.user_id === session.user?.id)) {
+        if (
+          session &&
+          !jsonData.some(
+            (user: { user_id: string }) => user.user_id === session.user?.id
+          )
+        ) {
           try {
             console.log("Session:", session);
             await axios.post("/api/addUser", {

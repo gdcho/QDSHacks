@@ -1,8 +1,7 @@
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import { AccountCircleOutlined } from "@mui/icons-material";
+import { Avatar, Box, Typography, Paper } from "@mui/material";
+import { North } from "@mui/icons-material";
 
 type UserProps = {
   name: string;
@@ -19,7 +18,7 @@ interface MatchInfo {
   userId: string;
   index1: number;
   index2: number;
-  requestId: string; // Assuming 'id' is the requestor's ID you want to include in the return
+  requestId: string;
 }
 
 function run(thisUser: any[], users: any, id: never) {
@@ -53,7 +52,6 @@ function run(thisUser: any[], users: any, id: never) {
     let index1 = -1;
     let index2 = -1;
 
-    // Ensure we're working with numbers by mapping the strings to integers
     const chosenRatings = chosen[0].map((rating: string) =>
       parseInt(rating, 10)
     );
@@ -112,7 +110,6 @@ function run(thisUser: any[], users: any, id: never) {
 }
 
 export default function Match() {
-  const router = useRouter();
   const { data: session } = useSession();
   const [thisUser, setThisUser] = useState<string | null>(null);
   const [studentPair, setStudentPair] = useState<StudentPairProps | null>(null);
@@ -132,8 +129,6 @@ export default function Match() {
         const response = await fetch("/api/mongo");
         const jsonData = await response.json();
 
-        // Assuming `thisUser` matches a unique user.id in jsonData,
-        // and that userResults is structured correctly for your application's needs.
         const thisUserData = jsonData.find(
           (user: { user_id: any }) => user.user_id === thisUser
         );
@@ -157,7 +152,11 @@ export default function Match() {
           })
         );
 
-        const matchInfo = run([thisUserResults], otherUsersResults, thisUser as never);
+        const matchInfo = run(
+          [thisUserResults],
+          otherUsersResults,
+          thisUser as never
+        );
 
         var matchedUser = jsonData.find(
           (user: { user_id: string }) =>
@@ -199,48 +198,44 @@ export default function Match() {
     fetchData();
   }, [thisUser]);
   return (
-    <div className="flex flex-col items-center justify-center h-screen px-4">
-      {/* User 1 */}
-      <Image
+    <Box className="flex flex-col items-center justify-center p-10">
+      {/* User 2 */}
+      <Typography variant="h6">{studentPair?.user2.name}</Typography>
+      <Avatar
         src="/image/avatar.png"
         alt="User Avatar"
-        width={100}
-        height={100}
-        className="w-24 h-24 rounded-full mb-4"
+        style={{ width: 100, height: 100 }}
+        className="mb-4 mt-2"
       />
-      <div className="flex justify-between items-center w-full">
-        <p>{studentPair?.user2.name}</p> {/* Use user2 name here */}
-        <div className="bg-red-500 text-white px-4 py-2 rounded">
-          <p>{studentPair?.user2.weakness}</p> {/* Use user2 weakness here */}
-        </div>
-        <div className="bg-green-500 text-white px-4 py-2 rounded">
-          <p>{studentPair?.user2.strength}</p> {/* Use user2 strength here */}
-        </div>
-      </div>
-
+      <Box className="flex justify-between items-center w-full">
+        <Paper className="bg-red-500 text-white px-4 py-2 rounded-full">
+          <Typography>{studentPair?.user2.weakness}</Typography>
+        </Paper>
+        <Paper className="bg-green-500 text-white px-4 py-2 rounded-full">
+          <Typography>{studentPair?.user2.strength}</Typography>
+        </Paper>
+      </Box>
       {/* Arrows */}
-      <div className="flex justify-between items-center w-full my-8">
-        <div className="text-9xl transform rotate-180 my-4">&#8593;</div>{" "}
-        {/* Arrow pointing down */}
-        <div className="text-9xl my-4">&#8593;</div>
-      </div>
-
-      <Image
+      <Box className="flex justify-between items-center w-full my-8">
+        <North className="text-6xl my-8 transform scale-125" />
+        <North className="text-6xl my-8 transform rotate-180 scale-125" />
+      </Box>
+      {/* User 1 */}
+      <Typography variant="h6">{studentPair?.user1.name}</Typography>
+      <Avatar
         src="/image/avatar.png"
         alt="User Avatar"
-        width={100}
-        height={100}
-        className="w-24 h-24 rounded-full mb-4"
+        style={{ width: 100, height: 100 }}
+        className="mb-4 mt-2"
       />
-      <div className="flex justify-between items-center w-full">
-        <p>{studentPair?.user1.name}</p>
-        <div className="bg-green-500 text-white px-4 py-2 rounded">
-          <p>{studentPair?.user1.strength}</p>
-        </div>
-        <div className="bg-red-500 text-white px-4 py-2 rounded">
-          <p>{studentPair?.user1.weakness}</p>
-        </div>
-      </div>
-    </div>
+      <Box className="flex justify-between items-center w-full">
+        <Paper className="bg-green-500 text-white px-4 py-2 rounded-full">
+          <Typography>{studentPair?.user1.strength}</Typography>
+        </Paper>
+        <Paper className="bg-red-500 text-white px-4 py-2 rounded-full">
+          <Typography>{studentPair?.user1.weakness}</Typography>
+        </Paper>
+      </Box>
+    </Box>
   );
 }
