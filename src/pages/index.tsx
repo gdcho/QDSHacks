@@ -14,10 +14,7 @@ export default function Home() {
         const response = await fetch('/api/mongo');
         const jsonData = await response.json();
 
-        setUserData(jsonData);
-
-        console.log('Data received:', jsonData);
-        
+        setUserData(jsonData);        
 
         if (session && !jsonData.some((user: { user_id: string; }) => user.user_id === session.user?.id)) {
           try {

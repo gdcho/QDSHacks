@@ -37,15 +37,15 @@ function isTermData(termCourses: string[] | TermData): termCourses is TermData {
 
 export default function ProfileForm() {
   const { data: session } = useSession();
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState<boolean>(true);
   const [selectedTerm, setSelectedTerm] = useState("1");
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
   const [availableCourses, setAvailableCourses] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedCourseForRating, setSelectedCourseForRating] = useState("");
   const [courseRatings, setCourseRatings] = React.useState({});
-  const [showError, setShowError] = useState(false);
+  const [showError, setShowError] = useState<boolean>(false);
 
   const handleOpenModal = (course: React.SetStateAction<string>) => () => {
     setSelectedCourseForRating(course);
@@ -290,23 +290,20 @@ export default function ProfileForm() {
             />
           </Modal>
         </div>
-        <Box sx={{ display: "flex", pt: 2, gap: 2 }}>
+        <Box sx={{ display: "flex" }}>
           <Button
-            onClick={toggleEditMode}
+            onClick={() => {
+              if (isEditMode) {
+                saveForm();
+              } else {
+                setIsEditMode(true);
+              }
+            }}
             variant="outlined"
             sx={{ borderRadius: 10 }}
             fullWidth
           >
-            {isEditMode ? "Cancel" : "Edit"}
-          </Button>
-          <Button
-            onClick={saveForm}
-            variant="outlined"
-            disabled={!isEditMode}
-            sx={{ borderRadius: 10 }}
-            fullWidth
-          >
-            Save
+            {isEditMode ? "Save" : "Edit"}
           </Button>
         </Box>
       </Box>

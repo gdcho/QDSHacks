@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <SessionProvider session={pageProps.session}>
         <NextUIProvider>
-          <NextThemesProvider attribute="class" defaultTheme="dark">
+          <NextThemesProvider attribute="class" defaultTheme="light">
             <div>
               <Header />
               <div className="min-h-screen max-w-screen-2xl mx-auto">
