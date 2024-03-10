@@ -12,7 +12,7 @@ export const Footer = () => {
   const router = useRouter();
 
   return (
-    <footer className="sticky bottom-0 bg-gray-800 inset-x-0 w-full bg-no-repeat bg-top bg-cover sm:relative fixed">
+    <footer className="sticky bottom-0 bg-gray-800 inset-x-0 w-full bg-no-repeat bg-top bg-cover sm:relative">
       <div className="relative w-full max-w-[85rem] py-5 px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="px-7">
           {/* Header-like elements for mobile view */}

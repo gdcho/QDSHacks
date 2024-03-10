@@ -58,7 +58,7 @@ export default function ProfileForm() {
   };
 
   // Standard width for all form controls
-  const formControlWidth = { width: 300 };
+  const formControlWidth = { width: 350 };
 
   useEffect(() => {
     const termCourses = coursesByTerm[selectedTerm];

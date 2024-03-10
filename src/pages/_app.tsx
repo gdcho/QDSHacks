@@ -12,9 +12,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <SessionProvider session={pageProps.session}>
         <NextUIProvider>
           <NextThemesProvider attribute="class" defaultTheme="light">
-            <div>
+            <div className="flex flex-col min-h-screen">
               <Header />
-              <div className="min-h-screen max-w-screen-2xl mx-auto">
+              <div className="flex-grow">
                 <Component {...pageProps} />
               </div>
               <Footer />
